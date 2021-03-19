@@ -257,6 +257,7 @@ name = "github-trending-api"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "derive_more",
  "nipper",
  "reqwest",
  "serde",

@@ -11,9 +11,9 @@ fn main() -> anyhow::Result<()> {
 
     let response = reqwest::blocking::get(url)?.text()?;
 
-    let trends = get_trend(Document::from(&response))?;
+    let trend_repos = get_trend(Document::from(&response))?;
 
-    print!("{}", serde_json::to_string(&trends)?);
+    print!("{}", serde_json::to_string(&trend_repos)?);
 
     Ok(())
 }

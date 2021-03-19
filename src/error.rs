@@ -1,7 +1,9 @@
+use derive_more::Display;
 use serde::Serialize;
 use thiserror::Error as ThisError;
 
-#[derive(Serialize, Debug, ThisError)]
+#[derive(Serialize, Debug, Display, ThisError)]
+#[display(fmt = "{}", message)]
 pub struct TrendError {
     message: String,
 }
@@ -11,11 +13,5 @@ impl TrendError {
         TrendError {
             message: message.to_string(),
         }
-    }
-}
-
-impl std::fmt::Display for TrendError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message)
     }
 }

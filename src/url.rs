@@ -1,22 +1,13 @@
-use core::fmt;
-pub enum DateRange {
-    Today,
-    ThisWeek,
-    ThisMonth,
-}
+use derive_more::Display;
 
-impl fmt::Display for DateRange {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                DateRange::Today => "daily",
-                DateRange::ThisWeek => "weekly",
-                DateRange::ThisMonth => "monthly",
-            }
-        )
-    }
+#[derive(Display)]
+pub enum DateRange {
+    #[display(fmt = "daily")]
+    Today,
+    #[display(fmt = "weekly")]
+    ThisWeek,
+    #[display(fmt = "monthly")]
+    ThisMonth,
 }
 
 pub fn construct_url(
