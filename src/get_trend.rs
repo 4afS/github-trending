@@ -31,7 +31,7 @@ fn is_given_language_exist(lang: &str, article: &Document) -> bool {
         .text()
         .to_string();
 
-    obtained_lang == *lang
+    lang.to_lowercase().eq(&obtained_lang.trim().to_lowercase())
 }
 
 fn username_and_repository(article: &Selection) -> anyhow::Result<(String, String)> {
