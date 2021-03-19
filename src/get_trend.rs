@@ -12,9 +12,9 @@ pub fn get_trend(document: Document) -> anyhow::Result<Vec<Trend>> {
         let user_repo = username_and_repo(&article)
             .ok_or_else(|| TrendError::new("username and repository not found"))?;
         result.push(Trend::new(
-            user_repo.0,
-            user_repo.1,
-            about(&article).ok_or_else(|| TrendError::new("about repository nod found"))?,
+            &user_repo.0,
+            &user_repo.1,
+            &about(&article).ok_or_else(|| TrendError::new("about repository nod found"))?,
             Stars::new(
                 stars_count(&article)
                     .ok_or_else(|| TrendError::new("total stars count not found"))?,

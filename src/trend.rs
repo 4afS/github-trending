@@ -1,3 +1,4 @@
+use derive_new::new;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -12,34 +13,33 @@ pub struct Trend {
 
 impl Trend {
     pub fn new(
-        user_name: String,
-        repo_name: String,
-        about: String,
+        user_name: &str,
+        repo_name: &str,
+        about: &str,
         stars: Stars,
         forks_count: u32,
     ) -> Self {
         Trend {
-            user_name: user_name.clone(),
-            repo_name: repo_name.clone(),
+            user_name: user_name.to_string(),
+            repo_name: repo_name.to_string(),
             repo_url: format!("https://github.com/{}/{}", user_name, repo_name),
-            about,
+            about: about.to_string(),
             stars,
             forks_count,
         }
     }
 }
 
-#[derive(Serialize)]
+#[test]
+fn test_trend_new() {
+    assert_eq!(
+        Trend::new("username", "repository", "", Stars::new(0, 0), 0,).repo_url,
+        "https://github.com/username/repository"
+    )
+}
+
+#[derive(Serialize, new)]
 pub struct Stars {
     total: u32,
     in_date_range: u32,
-}
-
-impl Stars {
-    pub fn new(total: u32, in_date_range: u32) -> Self {
-        Stars {
-            total,
-            in_date_range,
-        }
-    }
 }
