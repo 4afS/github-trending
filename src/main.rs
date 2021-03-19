@@ -1,5 +1,5 @@
-use github_trending_api::get_trend::get_trend;
-use github_trending_api::url::{construct_url, DateRange};
+use github_trending::get_trend::get_trend;
+use github_trending::url::{construct_url, DateRange};
 
 use nipper::Document;
 

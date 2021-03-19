@@ -253,7 +253,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "github-trending-api"
+name = "github-trending"
 version = "0.1.0"
 dependencies = [
  "anyhow",
