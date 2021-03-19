@@ -3,15 +3,9 @@ use serde::Serialize;
 use thiserror::Error as ThisError;
 
 #[derive(Serialize, Debug, Display, ThisError)]
-#[display(fmt = "{}", message)]
-pub struct TrendError {
-    message: String,
-}
-
-impl TrendError {
-    pub fn new(message: &str) -> Self {
-        TrendError {
-            message: message.to_string(),
-        }
-    }
+pub enum TrendError {
+    #[display(fmt = "{} not found", {0})]
+    NotFound(String),
+    #[display(fmt = "parse error")]
+    ParseError,
 }
