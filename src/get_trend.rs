@@ -5,9 +5,12 @@ use crate::{
     trend::{Stars, Trend},
 };
 
-pub fn get_trend(document: Document) -> anyhow::Result<Vec<Trend>> {
-    let mut result = Vec::new();
+pub fn get_trend(language: &str, document: Document) -> anyhow::Result<Vec<Trend>> {
+    if !is_given_language_exist(language, &document) {
+        return Err(TrendError::GivenLanguageIsNotExist.into());
+    }
 
+    let mut result = Vec::new();
     for article in document.select("article.Box-row").iter() {
         let (username, repository) = username_and_repository(&article)?;
         result.push(Trend::new(
@@ -20,6 +23,15 @@ pub fn get_trend(document: Document) -> anyhow::Result<Vec<Trend>> {
     }
 
     Ok(result)
+}
+
+fn is_given_language_exist(lang: &str, article: &Document) -> bool {
+    let obtained_lang = article
+        .select("#select-menu-language > summary:nth-child(1) > span:nth-child(1)")
+        .text()
+        .to_string();
+
+    obtained_lang == *lang
 }
 
 fn username_and_repository(article: &Selection) -> anyhow::Result<(String, String)> {
