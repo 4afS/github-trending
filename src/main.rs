@@ -1,22 +1,26 @@
+use github_trending::trend::get_repositories;
 use github_trending::url::{construct_url, DateRange};
-use github_trending::{error::ErrorResponse, get_trend::get_trend};
 
 use nipper::Document;
 
-fn main() -> anyhow::Result<()> {
-    let language = "rust";
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let language = "haskell";
     let date_range = DateRange::Today;
 
     let url = construct_url(None, language, &date_range);
 
-    let response = reqwest::blocking::get(url)?.text()?;
+    let response = reqwest::get(url).await?.text().await?;
 
-    match get_trend(language, Document::from(&response)) {
-        Ok(trend_repos) => print!("{}", serde_json::to_string(&trend_repos)?),
-        Err(e) => print!(
-            "{}",
-            serde_json::to_string(&ErrorResponse::new(e.to_string()))?
-        ),
+    let repos = get_repositories(language, Document::from(&response))?;
+    for repo in repos {
+        let repo_model: octocrab::models::Repository = octocrab::instance()
+            .get(
+                format!("https://api.github.com/repos/{}", repo.path()),
+                None::<&()>,
+            )
+            .await?;
+        println!("{:?}", repo_model.stargazers_count);
     }
 
     Ok(())
